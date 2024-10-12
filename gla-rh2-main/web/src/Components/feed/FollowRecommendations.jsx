@@ -1,7 +1,16 @@
-import React from 'react';
 
+import React, { useState } from 'react';
 
-export default function FollowRecommendations({ recommendations, followUser }) {
+export default function FollowRecommendations({ recommendations }) {
+  const [followedUsers, setFollowedUsers] = useState({});
+
+  const toggleFollow = (id) => {
+    setFollowedUsers((prevFollowedUsers) => ({
+      ...prevFollowedUsers,
+      [id]: !prevFollowedUsers[id], /
+    }));
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
       <h2 className="text-xl font-semibold mb-4">Who to Follow</h2>
@@ -13,10 +22,12 @@ export default function FollowRecommendations({ recommendations, followUser }) {
               <p className="text-sm text-gray-500">{rec.mutualFriends} mutual friends</p>
             </div>
             <button
-              onClick={() => followUser(rec.id)}
-              className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm hover:bg-blue-600 transition-colors"
+              onClick={() => toggleFollow(rec.id)}
+              className={`${
+                followedUsers[rec.id] ? 'bg-gray-500' : 'bg-blue-500'
+              } text-white px-3 py-1 rounded-full text-sm hover:opacity-90 transition-opacity`}
             >
-              Follow
+              {followedUsers[rec.id] ? 'Unfollow' : 'Follow'}
             </button>
           </li>
         ))}
@@ -24,3 +35,6 @@ export default function FollowRecommendations({ recommendations, followUser }) {
     </div>
   );
 }
+
+
+
